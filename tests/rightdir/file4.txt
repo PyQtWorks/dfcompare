@@ -1,0 +1,6 @@
+Right side of compare
+This is string is equal
+This string contains different words (right)
+
+Test string
+This string is only right side
