@@ -15,6 +15,8 @@ class DiffTwoSides:
         self.__diff_line = 0
         self.__text_line = 1
         self.__diff = list(difflib.ndiff(text_left, text_right))
+        for i in self.__diff:
+            print(i)
 
     def __iter__(self):
         return self
@@ -60,8 +62,8 @@ class DiffTwoSides:
                 lines[1] and lines[1][:2] == '? ' and \
                 lines[2] and lines[2][:2] == '+ ' and \
                 lines[3] and lines[3][:2] == '? ':
-            changes['left'] = [i for (i, c) in enumerate(lines[1]) if c in ['-', '^']]
-            changes['right'] = [i for (i, c) in enumerate(lines[1]) if c in ['+', '^']]
+            changes['left'] = [i for (i, c) in enumerate(lines[1][2:]) if c in ['-', '^']]
+            changes['right'] = [i for (i, c) in enumerate(lines[3][2:]) if c in ['+', '^']]
             changes['new_line'] = lines[2][2:]
             changes['skipped'] = 3
         # case (-, +, ?)
@@ -69,7 +71,7 @@ class DiffTwoSides:
                 lines[1] and lines[1][:2] == '+ ' and \
                 lines[2] and lines[2][:2] == '? ':
             changes['left'] = []
-            changes['right'] = [i for (i, c) in enumerate(lines[1]) if c in ['+', '^']]
+            changes['right'] = [i for (i, c) in enumerate(lines[2][2:]) if c in ['+', '^']]
             changes['new_line'] = lines[1][2:]
             changes['skipped'] = 2
             pass
@@ -77,7 +79,7 @@ class DiffTwoSides:
         elif lines[0] and lines[0][:2] == '- ' and \
                 lines[1] and lines[1][:2] == '? ' and \
                 lines[2] and lines[2][:2] == '+ ':
-            changes['left'] = [i for (i, c) in enumerate(lines[1]) if c in ['-', '^']]
+            changes['left'] = [i for (i, c) in enumerate(lines[1][2:]) if c in ['-', '^']]
             changes['right'] = []
             changes['new_line'] = lines[2][2:]
             changes['skipped'] = 2
